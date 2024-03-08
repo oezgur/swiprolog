@@ -1,13 +1,16 @@
 :- dynamic account/5.
 % Facts about banks
+% bank(bankID, bankName)
 bank(1, 'Bank A').
 bank(2, 'Bank B').
 
 % Facts about accounts
+% account(accountNumber, bankID, IBAN, clientID, balance)
 account(1001, 1, 'TR10010001', 1, 5000).
 account(1002, 2, 'TR10020001', 2, 8000).
 
 % Facts about clients
+% client(clientID, NationalID, Name, Surname, Gender)
 client(1, '11111111111', 'John', 'Doe', 'M').
 client(2, '22222222222', 'Jane', 'Doe', 'F').
 
