@@ -19,7 +19,12 @@ eft(SenderIban, ReceiverIban, Amount) :-
     NewSenderBalance is SenderBalance - Amount,
     retract(account(SenderAccount, SenderBank, SenderIban, SenderClient, SenderBalance)),
     assert(account(SenderAccount, SenderBank, SenderIban, SenderClient, NewSenderBalance)),
-    write('EFT transaction is successful.').
+    write('EFT transaction is successful.'),
+    write('Sender Balance:'),
+    write(SenderBalance),
+    write('Receiver Balance:'),
+    write(ReceiverBalance).
+    
 
 % Rule for transfer
 transfer(SenderAccountNumber, ReceiverName, ReceiverSurname, Amount) :-
