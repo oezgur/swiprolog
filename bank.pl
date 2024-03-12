@@ -44,3 +44,28 @@ transfer(SenderAccountNumber, ReceiverName, ReceiverSurname, Amount) :-
     retract(account(ReceiverAccount, ReceiverBank, ReceiverIban, ReceiverClient, ReceiverBalance)),
     assert(account(ReceiverAccount, ReceiverBank, ReceiverIban, ReceiverClient, NewReceiverBalance)),
     write('Transfer transaction is successful.').
+
+% Rule for balances
+balance(ClientID) :-
+    account(_, _, _, ClientID, Balance),
+    write('Balance:'),
+    write(Balance).
+
+% Rule for account information
+accountInfo(ClientID) :-
+    account(AccountNumber, BankID, IBAN, ClientID, _),
+    bank(BankID, BankName),
+    client(ClientID, NationalID, Name , Surname, Gender),
+    write('Account Number:'),
+    write(AccountNumber), nl,
+    write('Bank Name:'),
+    write(BankName), nl,
+    write('IBAN:'),
+    write(IBAN), nl,
+    write('Client Name:'),
+    write(Name), 
+    write(Surname), nl,
+    write('National ID:'),
+    write(NationalID), nl,
+    write('Gender:'),
+    write(Gender).
