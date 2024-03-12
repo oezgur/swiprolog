@@ -71,3 +71,15 @@ accountInfo(ClientID) :-
     write(NationalID), nl,
     write('Gender:'),
     write(Gender).
+
+% Rule for account information for all accounts
+accountInfo('ALL') :-
+    findall(ClientID, account(_, _, _, ClientID, _), ClientIDs),
+    listAccounts(ClientIDs).
+
+% Helper predicate to list all accounts
+listAccounts([]).
+listAccounts([ClientID|Rest]) :-
+    accountInfo(ClientID),
+    nl,
+    listAccounts(Rest).
