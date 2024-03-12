@@ -6,21 +6,21 @@ bank(2, 'Bank B').
 
 % Facts about accounts
 % account(accountNumber, bankID, IBAN, clientID, balance)
-account(1001, 1, 'TR10010001', 1, 5000).
-account(1003, 1, 'TR10030001', 3, 500).
-account(1002, 2, 'TR10020001', 2, 8000).
+account(1001, 1, 'TR10010001', 1, 10000).
+account(1003, 1, 'TR10030001', 3, 10000).
+account(1002, 2, 'TR10020001', 2, 10000).
 
 % Facts about clients
 % client(clientID, NationalID, Name, Surname, Gender)
 client(1, '11111111111', 'John', 'Doe', 'M').
 client(2, '22222222222', 'Jane', 'Doe', 'F').
-
+client(3, '33333333333', 'Alice', 'Smith', 'F').
 
 % Rule for EFT
 eft(SenderIban, ReceiverIban, Amount) :-
     account(SenderAccount, SenderBank, SenderIban, SenderClient, SenderBalance),
     account(ReceiverAccount, ReceiverBank, ReceiverIban, ReceiverClient, ReceiverBalance),
-    (SenderBank = ReceiverBank -> Fee = 0 ; Fee = 5), % Set fee to 5 if banks are different
+    (SenderBank \= ReceiverBank, Amount =< 1000 -> Fee = 5 ; Fee is Amount * 0.03),
     SenderBalance >= Amount + Fee,
     NewSenderBalance is SenderBalance - Amount - Fee,
     NewReceiverBalance is ReceiverBalance + Amount,
@@ -29,7 +29,7 @@ eft(SenderIban, ReceiverIban, Amount) :-
     retract(account(ReceiverAccount, ReceiverBank, ReceiverIban, ReceiverClient, ReceiverBalance)),
     assertz(account(ReceiverAccount, ReceiverBank, ReceiverIban, ReceiverClient, NewReceiverBalance)),
     write('Sender Balance:'),
-    write(NewSenderBalance),
+    write(NewSenderBalance), nl,
     write('Receiver Balance:'),
     write(NewReceiverBalance).
 
