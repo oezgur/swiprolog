@@ -1,8 +1,13 @@
+:- dynamic bank/2.
+:- dynamic client/5.
 :- dynamic account/5.
+
 % Facts about banks
 % bank(bankID, bankName)
 bank(1, 'Bank A').
 bank(2, 'Bank B').
+
+
 
 % Facts about accounts
 % account(accountNumber, bankID, IBAN, clientID, balance)
@@ -15,6 +20,22 @@ account(1002, 2, 'TR10020001', 2, 10000).
 client(1, '11111111111', 'John', 'Doe', 'M').
 client(2, '22222222222', 'Jane', 'Doe', 'F').
 client(3, '33333333333', 'Alice', 'Smith', 'F').
+
+% Function to create a new bank
+% createBank(BankID, BankName)
+createBank(BankID, BankName) :-
+    assertz(bank(BankID, BankName)).
+
+% Function to create a new client
+% createClient(clientID, NationalID, Name, Surname, Gender)
+createClient(clientID, NationalID, Name, Surname, Gender) :-
+    assertz(client(clientID, NationalID, Name, Surname, Gender)).
+
+% Function to create a new account
+% createAccount(AccountNumber, BankID, IBAN, ClientID, Balance)
+createAccount(AccountNumber, BankID, IBAN, ClientID, Balance) :-
+    assertz(account(AccountNumber, BankID, IBAN, ClientID, Balance)).
+
 
 % Rule for EFT
 eft(SenderIban, ReceiverIban, Amount) :-
@@ -83,3 +104,24 @@ listAccounts([ClientID|Rest]) :-
     accountInfo(ClientID),
     nl,
     listAccounts(Rest).
+
+% Rule for bank information for all banks
+bankInfo('ALL') :-
+    findall(BankID, bank(BankID, _), BankIDs),
+    listBanks(BankIDs).
+
+% Helper predicate to list all banks
+listBanks([]).
+listBanks([BankID|Rest]) :-
+    bankInfo(BankID),
+    nl,
+    listBanks(Rest).
+
+% Rule for bank information for a specific bank
+bankInfo(BankID) :-
+    bank(BankID, BankName),
+    write('Bank ID:'),
+    write(BankID), nl,
+    write('Bank Name:'),
+    write(BankName).
+    
